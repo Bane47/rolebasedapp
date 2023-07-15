@@ -1,0 +1,14 @@
+{
+  "Accounts": [
+    {
+      "name": "Satis Kumar",
+      "age": "19",
+      "phone": "9784512963",
+      "nation": "India",
+      "email": "sri@cvb.gmail.com",
+      "password": "qweQWE123!@#",
+      "userType": "User",
+      "id": 1
+    }
+  ]
+}
