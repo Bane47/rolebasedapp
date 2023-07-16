@@ -62,7 +62,7 @@ function MyForm() {
 console.log("Success")
     },[])
     return (
-        <div className='pb-3 mx-auto shadow col-lg-6 m-3'>
+        <div className='pb-3 mx-auto shadow col-lg-5 m-3'>
             <h3 className='p-3 '>Register</h3>
             <Form className='m-3' id='myform' onSubmit={handleSubmit(submitData)}>
                 <Form.Group as={Row} className="mb-3" >

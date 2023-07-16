@@ -6,39 +6,33 @@ import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { AuthProvider, useAuth } from 'react-auth-kit';
 
 const Login = () => {
-    const { register, handleSubmit, formState: { errors }, watch } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const [name, setName] = useState('')
-    const [age, setAge] = useState(0)
-    const [phone, setPhone] = useState('')
-    const [nation, setNation] = useState('')
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userType, setUserType] = useState('')
     const [id, setId] = useState('')
-    const [authState, setAuthState] = useAuth();
    
+    const Type = React.createContext(userType)
 
-
-    const submitData = (data) => {
+     const submitData = (data) => {
         setName(data.name);
         setPassword(data.password);
-        setUserType(data.type)
+       
     }
 
     const fetchData = () => {
         axios.get(`http://localhost:4000/Accounts?name_like=${name}`)
             .then((data) => {
-                setName(data.name);
-                setAuthState({ user: data.type })
-                setPassword(data.password);
-                setUserType(data.type)
-                setId(data.id)
+                setName(data.data[0]);
+                setPassword(data.data[0]);
+                setUserType(data.data[0].userType)
+                console.log(data.data[0].userType )
+                setId(data.data[0])
             })
             .then(() => {
-
+                
             })
     }
     useEffect(()=>{
@@ -48,7 +42,7 @@ fetchData()
 
     return (
         <div>
-            <div className='pb-3 mx-auto shadow col-lg-6 m-3'>
+            <div className='pb-3 mx-auto shadow col-lg-4 m-3'>
                 <h3 className='p-3 '>Login</h3>
                 <Form className='m-3' id='myform' onSubmit={handleSubmit(submitData)}>
                     <Form.Group as={Row} className="mb-3" >
@@ -78,7 +72,7 @@ fetchData()
                         </Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} className="mb-3" >
+                    {/* <Form.Group as={Row} className="mb-3" >
 
                         {['radio'].map((type) => (
                             <div key={`inline-${type}`} className="mb-3" name='type' >
@@ -105,10 +99,10 @@ fetchData()
                         ))}
                         {errors.type && <span className='text-danger'>Please select the Type</span>}
 
-                    </Form.Group>
+                    </Form.Group> */}
 
 
-                    <Button variant="info" className='text-white' type='submit'>Submit</Button>
+                    <Button variant="info" className='text-white m-3' type='submit'>Submit</Button>
 
                 </Form>
 

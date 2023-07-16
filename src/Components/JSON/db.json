@@ -7,8 +7,20 @@
       "nation": "India",
       "email": "sri@cvb.gmail.com",
       "password": "qweQWE123!@#",
-      "userType": "User",
+      "userType": "Admin",
       "id": 1
+    }
+    
+  ],
+  "Tasks":[
+    {
+      "id":1,
+      "Name":"Maaveeran",
+      "WorkAssigned":"Kidnapping Kajal",
+      "Mission":"Accomplished",
+      "AssignedUser":"Sher Khan",
+      "DueDate":"1500 AD",
+      "userId":1
     }
   ]
 }

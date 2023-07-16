@@ -7,7 +7,9 @@ const Navbar = () => {
     return (
         <div className='bg-info d-flex  p-3' >
             <div className='text-start'>
-                <i className="pi pi-prime  " style={{ fontSize: '2rem' }}></i>
+                <Link to="/Home">
+                <i className="pi pi-prime text-black" style={{ fontSize: '2rem' }}></i>
+                </Link>
             </div>
 
             <div className='ms-auto '>
