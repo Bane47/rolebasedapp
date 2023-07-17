@@ -9,18 +9,28 @@
       "password": "qweQWE123!@#",
       "userType": "Admin",
       "id": 1
-    }
-    
-  ],
-  "Tasks":[
+    },
     {
-      "id":1,
-      "Name":"Maaveeran",
-      "WorkAssigned":"Kidnapping Kajal",
-      "Mission":"Accomplished",
-      "AssignedUser":"Sher Khan",
-      "DueDate":"1500 AD",
-      "userId":1
+      "name": "Priyadarshan M",
+      "age": "21",
+      "phone": "8300287044",
+      "nation": "India",
+      "email": "Priyadarshanmanoharan@gmail.com",
+      "password": "aA1!",
+      "userType": "User",
+      "isLogged": false,
+      "id": 2
+    }
+  ],
+  "Tasks": [
+    {
+      "id": 1,
+      "Name": "Maaveeran",
+      "WorkAssigned": "Kidnapping Kajal",
+      "Mission": "Accomplished",
+      "AssignedUser": "Sher Khan",
+      "DueDate": "1500 AD",
+      "userId": 1
     }
   ]
 }

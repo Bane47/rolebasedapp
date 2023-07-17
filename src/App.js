@@ -1,28 +1,27 @@
+import React from 'react';
 import './App.css';
 import MyForm from './Components/Pages/SignUp';
 import Navbar from './Components/Navbar/Navbar';
-import { BrowserRouter } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Components/Pages/Login';
 import AdminPage from './Components/AdminPage/AdminPage';
-import { CustomContext, CustomProvider } from './Components/Context/Context';
-import { useContext } from 'react';
+import { TypeProvider } from './Components/Context/Context';
+import { MissionProvider } from './Components/Context/MissionProvider';
 
 function App() {
-  const userType = useContext(CustomContext)
-  console.log("Is vsdf "+userType)
   return (
     <div className="App">
       <BrowserRouter>
         <Navbar />
-        <CustomProvider >
-          <Routes>
-            <Route path='/Home' element={<AdminPage />} />
-            <Route path='/myform' element={<MyForm />} />
-            <Route path='/login' element={<Login />} />
-          </Routes>
-          
-             </CustomProvider>
+        <TypeProvider>
+          <MissionProvider>
+            <Routes>
+              <Route path='/Home' element={<AdminPage />} />
+              <Route path='/myform' element={<MyForm />} />
+              <Route path='/login' element={<Login />} />
+            </Routes>
+          </MissionProvider>
+        </TypeProvider>
       </BrowserRouter>
     </div>
   );

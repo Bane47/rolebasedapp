@@ -113,7 +113,34 @@ const Login = () => {
               </Col>
             </Form.Group>
 
-           
+            {/* <Form.Group as={Row} className="mb-3" >
+
+                        {['radio'].map((type) => (
+                            <div key={`inline-${type}`} className="mb-3" name='type' >
+                                <Form.Check
+                                    inline
+                                    label="Admin"
+                                    name="group1"
+                                    type={type}
+                                    value="Admin"
+                                    id={`inline-${type}-1`}
+                                    {...register('type', { required: true })}
+                                />
+                                <Form.Check
+                                    inline
+                                    label="User"
+                                    name="group1"
+                                    type={type}
+                                    value="User"
+                                    id={`inline-${type}-2`}
+                                    {...register('type', { required: true })}
+                                />
+
+                            </div  >
+                        ))}
+                        {errors.type && <span className='text-danger'>Please select the Type</span>}
+
+                    </Form.Group> */}
 
             <Button variant="info" className="text-white m-3" type="submit">
               Submit
