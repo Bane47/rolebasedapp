@@ -1,5 +1,5 @@
 {
-  "Accounts": [
+  "Admin": [
     {
       "name": "Satis Kumar",
       "age": "19",
@@ -9,28 +9,45 @@
       "password": "qweQWE123!@#",
       "userType": "Admin",
       "id": 1
-    },
-    {
-      "name": "Priyadarshan M",
-      "age": "21",
-      "phone": "8300287044",
-      "nation": "India",
-      "email": "Priyadarshanmanoharan@gmail.com",
-      "password": "aA1!",
-      "userType": "User",
-      "isLogged": false,
-      "id": 2
     }
   ],
+  "Users":[],
   "Tasks": [
     {
-      "id": 1,
-      "Name": "Maaveeran",
-      "WorkAssigned": "Kidnapping Kajal",
+      "Name": "Darshan",
+      "WorkAssigned": "Watch movie",
       "Mission": "Accomplished",
-      "AssignedUser": "Sher Khan",
-      "DueDate": "1500 AD",
-      "userId": 1
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-07-04",
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "Name": "M.S.Dhoni",
+      "WorkAssigned": "Stumping",
+      "Mission": "To be started",
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-07-05",
+      "userId": 2,
+      "id": 2
+    },
+    {
+      "Name": "Kabir singh",
+      "WorkAssigned": "Find His girlfriend",
+      "Mission": "In Progress",
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-07-27",
+      "userId": 3,
+      "id": 3
+    },
+    {
+      "Name": "Sharon",
+      "WorkAssigned": "Coding",
+      "Mission": "Accomplished",
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-07-13",
+      "userId": 4,
+      "id": 4
     }
   ]
 }

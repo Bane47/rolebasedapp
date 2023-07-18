@@ -19,6 +19,7 @@ const Login = () => {
   var password;
   // const [password, setPassword] = useState('')
   const { setUserType } = useContext(TypeContext); // Remove userType from here
+  const { setAdmin } = useContext(TypeContext)
   const [id, setId] = useState("");
   // const [checkPassword,setCheckPassword] = useState('')
   var checkPassword;
@@ -49,19 +50,13 @@ const Login = () => {
               setId(data.data[0]);
             })
             .then(() => {
-              console.log(checkPassword, password);
-              if (checkPassword === password) {
-                console.log(checkPassword, password);
-                alert(`Welcome back ${name}`);
-              } else {
-                setUserType("User");
-                alert("Password is incorrect");
-              }
+              alert(`Welcome back ${name}`)
+              setAdmin(name)
             })
             .catch((err) => {
               console.log(err);
             });
-        }
+        } else alert("Password is incorrect ")
       });
   };
 
@@ -99,12 +94,6 @@ const Login = () => {
                   name="password"
                   {...register("password", {
                     required: "Password is required",
-                    pattern: {
-                      value:
-                        /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-                      message:
-                        "Password must contain atleast one uppercase ,lowercase , number and a special character",
-                    },
                   })}
                 />
                 {errors.password && (
@@ -113,7 +102,7 @@ const Login = () => {
               </Col>
             </Form.Group>
 
-           
+
 
             <Button variant="info" className="text-white m-3" type="submit">
               Submit

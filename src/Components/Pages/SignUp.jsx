@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { isEmail } from 'validator';
-import axios from 'axios'
+import axios from 'axios';
+import './../CSS files/SignUp.css'
 
 
 function MyForm() {
@@ -67,7 +68,7 @@ console.log("Success")
 
     },[])
     return (
-        <div className='pb-3 mx-auto shadow col-lg-5 m-3'>
+        <div className='pb-3 mx-auto shadow col-lg-5 m-3 '>
             <h3 className='p-3 '>Register</h3>
             <Form className='m-3' id='myform' onSubmit={handleSubmit(submitData)}>
                 <Form.Group as={Row} className="mb-3" >
@@ -149,35 +150,12 @@ console.log("Success")
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3" >
 
-                    {['radio'].map((type) => (
-                        <div key={`inline-${type}`} className="mb-3" name='type' >
-                            <Form.Check
-                                inline
-                                label="Admin"
-                                name="group1"
-                                type={type}
-                                value="Admin"
-                                id={`inline-${type}-1`}
-                                {...register('type', { required: true })}
-                            />
-                            <Form.Check
-                                inline
-                                label="User"
-                                name="group1"
-                                type={type}
-                                value="User"
-                                id={`inline-${type}-2`}
-                                {...register('type', { required: true })}
-                            />
-
-                        </div  >
-                    ))}
-                    {errors.type && <span className='text-danger'>Please select the Type</span>}
-
+ <h5>Category : Agent</h5>
                 </Form.Group>
 
 
                 <Button variant="info" className='text-white' type='submit'>Submit</Button>
+                <p>Want to be an admin? Click here</p>
 
             </Form>
 
