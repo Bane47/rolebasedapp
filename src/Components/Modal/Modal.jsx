@@ -4,13 +4,14 @@ import Modal from 'react-bootstrap/Modal';
 import { TypeContext, MissionContext } from '../Context/Context';
 import axios from 'axios';
 export function MyModal(props) {
-  var Name, WorkAssigned, Mission, AssignedUser, DueDate, userId
+  var Name, WorkAssigned, Mission, AssignedUser, DueDate, userId;
   const [mission, setMission] = useState('')
   const { admin } = useContext(TypeContext);
+  var userNames = [];
+  const [userList,setUserList] = useState([]);
 
-  const handleMission = (e) => {
-    setMission(e);
-  };
+
+
   const fetchData = () => {
     axios.get(`http://localhost:4000/Tasks/${parseInt(props.workId)}`)
       .then((res) => {
@@ -22,6 +23,7 @@ export function MyModal(props) {
         DueDate = res.data.DueDate;
         userId = res.data.userId;
       }).then(() => {
+        console.log("ds"+parseInt(props.workId))
         axios.put(`http://localhost:4000/Tasks/${parseInt(props.workId)}`, {
           Name: Name,
           WorkAssigned: WorkAssigned,
@@ -39,6 +41,7 @@ export function MyModal(props) {
   .then((res)=> res.json())
   .then((response) => {
     for (const res of response) {
+      parseInt(count);
       count++
     }
   }).then(()=>{
@@ -48,12 +51,26 @@ export function MyModal(props) {
         Mission: "To be started",
         AssignedUser: admin,
         DueDate: DueDate,
-        userId: count+1
+        userId: "Agent "+count
       })
     })
   
     
   }
+  useEffect(()=>{
+
+    axios.get("http://localhost:4000/Users")
+    .then((users)=>{
+      for (const user of users.data) {
+        if(!userNames.includes(user.name)){
+          userNames.push(user.name)
+          setUserList(userNames)
+        }
+       
+    
+      }
+    })
+  },[])
 
 
 
@@ -72,11 +89,21 @@ export function MyModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {admin ? (
+        {console.log(admin)}
+        {admin==="" ? (
           <>
             <div className='d-flex justify-content-center'>
               <h4 className='col-lg-3 my-3'>Name</h4>
-              <input className='col-lg-3 my-3' type="text" placeholder='Name' onChange={(e)=>Name=e.target.value} />
+              <select name="name" id="name" className='col-lg-3 my-3' onChange={(e)=>Name=e.target.value}>
+              <option value=""></option>
+              {userList.map((use)=>(
+                <>
+
+                <option value={use}>{use}</option>
+                </>
+              ))}
+
+              </select>
             </div>
             <div className='d-flex justify-content-center'>
               <h4 className='col-lg-3 my-3'>Assign Work</h4>
@@ -97,7 +124,7 @@ export function MyModal(props) {
           <>
             <div className='d-flex justify-content-center'>
               <h4 className='col-lg-3 my-3'>Mission Status</h4>
-              <select className='col-lg-3 my-3' name="mission" onChange={(e) => handleMission(e.target.value)}>
+              <select className='col-lg-3 my-3' name="mission" onChange={(e) => setMission(e.target.value)}>
                 <option value={props.mission}>{props.mission}</option>
                 <option value="To be started">To be started</option>
                 <option value="In Progress">In Progress</option>

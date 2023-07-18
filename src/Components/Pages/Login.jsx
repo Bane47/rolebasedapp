@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { TypeContext } from "../Context/Context";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -15,56 +16,57 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const [name, setName] = useState("");
-  var password;
-  // const [password, setPassword] = useState('')
+  var password,name,checkPassword,id,phrase="Entering the shadows with lethal grace";
   const { setUserType } = useContext(TypeContext); // Remove userType from here
-  const { setAdmin } = useContext(TypeContext)
-  const [id, setId] = useState("");
-  // const [checkPassword,setCheckPassword] = useState('')
-  var checkPassword;
+  const {  setHitman } = useContext(TypeContext)
+const [Category,setCategory]= useState("Users")
 
   const submitData = (data) => {
-    setName(data.name);
+    name=data.name;
     password = data.password;
-    fetchData();
+    fetchData(Category);
+        if(Category==="Admin"){
+          phrase="Administrator privileges activated!"
+        }
   };
-  console.log(name);
-
-  const fetchData = () => {
-    fetch("http://localhost:4000/Accounts")
+  const fetchData = (Category) => {
+    fetch(`http://localhost:4000/${Category}`)
       .then((response) => response.json())
       .then((data) => {
-        const foundUser = data.find(
-          (user) => user.name === name && user.password === password
-        );
+        const foundUser = data.find((user) => user.name === name && user.password === password);
 
         if (foundUser) {
           axios
-            .get(`http://localhost:4000/Accounts?name_like=${name}`)
+            .get(`http://localhost:4000/${Category}?name=${name}`)
             .then((data) => {
-              setName(data.data[0].name);
+              name=data.data[0].name;
               checkPassword = data.data[0].password;
               setUserType(data.data[0].userType);
-              console.log("Hello" + data.data[0].userType);
-              setId(data.data[0]);
+              id=data.data[0];
             })
             .then(() => {
-              alert(`Welcome back ${name}`)
-              setAdmin(name)
+              if(Category==="User")
+              alert(`Access granted ${phrase}`)
+              else alert(`${phrase}`)
+              setHitman(name)
             })
             .catch((err) => {
               console.log(err);
             });
-        } else alert("Password is incorrect ")
+        } else alert("Authentication forbidden,password incorrect ")
       });
   };
+  useEffect(()=>{
+    console.log(Category)
+    
+  })
 
   return (
     <div>
+
       <TypeContext.Provider value={{ setUserType }}>
         <div className="pb-3 mx-auto shadow col-lg-4 m-3">
-          <h3 className="p-3 ">Login</h3>
+          <h3 className="p-3 ">Login {Category}</h3>
           <Form className="m-3" id="myform" onSubmit={handleSubmit(submitData)}>
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm="3">
@@ -108,8 +110,16 @@ const Login = () => {
               Submit
             </Button>
           </Form>
+          <>
+          {Category==="Users"?(
+          <p>Click here to login as <button className="text-primary border-0 bg-white" onClick={(e)=>setCategory("Admin")}>Agency Admin</button> </p>
+          ):(
+            <p>Click here to login as <button className="text-primary border-0 bg-white" onClick={(e)=>setCategory("Users")}>Agency User</button> </p>
+          )}
+          </>
         </div>
       </TypeContext.Provider>
+
     </div>
   );
 };

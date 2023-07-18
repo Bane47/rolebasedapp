@@ -11,43 +11,48 @@
       "id": 1
     }
   ],
-  "Users":[],
-  "Tasks": [
+  "Users": [
     {
-      "Name": "Darshan",
-      "WorkAssigned": "Watch movie",
-      "Mission": "Accomplished",
-      "AssignedUser": "Satis Kumar",
-      "DueDate": "2023-07-04",
-      "userId": 1,
+      "name": "Priyadarshan M",
+      "age": "21",
+      "phone": "0830028704",
+      "nation": "India",
+      "email": "Priyadarshanmanoharan@gmail.com",
+      "password": "aA1!",
+      "userType": "User",
+      "isLogged": false,
       "id": 1
     },
     {
-      "Name": "M.S.Dhoni",
-      "WorkAssigned": "Stumping",
-      "Mission": "To be started",
-      "AssignedUser": "Satis Kumar",
-      "DueDate": "2023-07-05",
-      "userId": 2,
+      "name": "Sharon",
+      "age": "25",
+      "phone": "9876543210",
+      "nation": "India",
+      "email": "Priyadarshanmanoharan@gmail.com",
+      "password": "qQ1!",
+      "userType": "User",
+      "isLogged": false,
       "id": 2
-    },
-    {
-      "Name": "Kabir singh",
-      "WorkAssigned": "Find His girlfriend",
-      "Mission": "In Progress",
-      "AssignedUser": "Satis Kumar",
-      "DueDate": "2023-07-27",
-      "userId": 3,
-      "id": 3
-    },
+    }
+  ],
+  "Tasks": [
     {
       "Name": "Sharon",
-      "WorkAssigned": "Coding",
-      "Mission": "Accomplished",
+      "WorkAssigned": "Kill the president",
+      "Mission": "In Progress",
       "AssignedUser": "Satis Kumar",
-      "DueDate": "2023-07-13",
-      "userId": 4,
-      "id": 4
+      "DueDate": "2023-07-29",
+      "userId": "Agent 0",
+      "id": 1
+    },
+    {
+      "Name": "Priyadarshan M",
+      "WorkAssigned": "Rescue the officer",
+      "Mission": "In Progress",
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-07-29",
+      "userId": "Agent 1",
+      "id": 2
     }
   ]
 }

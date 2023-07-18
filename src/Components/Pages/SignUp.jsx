@@ -41,14 +41,14 @@ function MyForm() {
     //Posting the form data into the json
     const postData=()=>{
         if(name.length>0){
-        axios.post("http://localhost:4000/Accounts",{
+        axios.post("http://localhost:4000/Users",{
             name:name,
             age:age,
             phone:phone,
             nation:nation,
             email:email,
             password:password,
-            userType:userType,
+            userType:"User",
             isLogged:false
 
         }).then(()=>{
