@@ -14,10 +14,11 @@ const AdminPage = () => {
   const { userType, hitman } = useContext(TypeContext);
   const [taskIndex, setTaskIndex] = useState([]);
   const [sortOption, setSortOption] = useState('');
-  const [taskuser, setTaskUser] = useState([]);  const [tasks, setTasks] = useState([])
+  const [taskuser, setTaskUser] = useState([]); const [tasks, setTasks] = useState([])
   const [modalShow, setModalShow] = useState(false);
   const [searchResults, setSearchResults] = useState('');
-  const [searchItem,setSearchItem] = useState('')
+  const [searchItem, setSearchItem] = useState('')
+  const [missionSort,setMissionSort] = useState('')
 
   const fetchData = (name) => {
     axios.get(`http://localhost:4000/Tasks?${name}=${hitman}`)
@@ -33,42 +34,68 @@ const AdminPage = () => {
       })
   }
 
-  const sortItems =(tasks)=>{
+
+  // sortedTasks2 do this
+
+
+
+  const sortItems = (tasks) => {
+    const NoElement = "There are no tasks"
     const sortedTasks = [...tasks];
-    sortedTasks.sort((a,b)=>{
+    const missionSort = (opti) => {
+
       switch(sortOption){
+        case 'ToBeStarted':
+          return missionSort("To Be Started");
+      case 'InProgress':
+        return missionSort("In Progress");
+        case 'Accomplished':
+          return missionSort("Accomplished");
+      }
+
+      for (const task of tasks) {
+
+        return tasks.filter((opt) => opt.Mission.toLowerCase().includes(opti.toLowerCase()))
+      }
+    }
+
+  
+
+    sortedTasks.sort((a, b) => {
+      switch (sortOption) {
         case 'Ascending':
           return a.Name.localeCompare(b.Name);
-          case 'Descending':
-          return a.Name.localeCompare(b.Name);
-       
+        case 'Descending':
+          return b.Name.localeCompare(a.Name);
         default:
           return 0;
-       
+
       }
     })
+    console.log(sortedTasks)
     return sortedTasks;
   }
 
-  const sortedTasks = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
-console.log(sortedTasks)
-  const handleSortChange=(event)=>{
+  const handleSortChange = (event) => {
     setSortOption(event.target.value)
   }
+  const handleMissionChange=(e)=>{
+setMissionSort(e.target.value)
+  }
 
-  const handleInputChange = (event)=>{
+  const handleInputChange = (event) => {
     setSearchItem(event.target.value)
   }
 
-  const handleSearch=()=>{
-setSearchResults(tasks);
+  const handleSearch = () => {
+    setSearchResults(tasks);
   }
-  const search=()=>{
+  const search = () => {
     console.log(tasks)
 
-// const searchResult =  tasks.filter((item)=>String(item.name).toLowerCase().includes(searchItem.toLowerCase()));
+    // const searchResult =  tasks.filter((item)=>String(item.name).toLowerCase().includes(searchItem.toLowerCase()));
 
-// setSearchTasks((searchResult))
+    // setSearchTasks((searchResult))
   }
 
   useEffect(() => {
@@ -76,6 +103,22 @@ setSearchResults(tasks);
       fetchData("noname");
     } else fetchData("Name");
 
+  }, [])
+
+
+  const sortDataFetch = () => {
+    axios.get("http://localhost:4000/Tasks")
+      .then((data) => {
+        setTaskIndex(data.data)
+      })
+  }
+  const sortedTasks = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
+  const sortedTasks2 = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
+
+
+  useEffect(() => {
+    sortDataFetch();
+    console.log(sortedTasks)
   }, [])
 
   return (
@@ -88,92 +131,100 @@ setSearchResults(tasks);
 
           </>
         )}
-        {console.log(hitman)}
-        {hitman!="NoUser"? (
+        {hitman != "NoUser" ? (
           <>
-          <div className='search '>
-         <input type="text" onChange={handleInputChange} placeholder="search..." value={searchItem} /><span><button onClick={handleSearch}>Search</button></span>
-         {console.log("length "+searchResults)}
-         {searchResults.length>0 &&(
-        <div className="dropdown">
-        {searchResults.map((result, index) => (
-          <div key={index} className="dropdown-item">
-            {result}
-          </div>
-        ))}
-      </div>
-         )}
-         </div>
-         <div className='sort '>
-         <select className="mt-5 text-center" value={sortOption} onChange={handleSortChange} >
-          <option value="Ascending">Sort by Ascending</option>
-          <option value="Descending">Sort by Descending</option>         
-        </select>
-         </div>
-    
-        <h1>Status Report</h1>
-        <table className=' table table-striped my-3 '>
-          <thead>
-            
-            <th className='px-4'>Agency Name</th>
-            <th className='px-4'>Name</th> 
-            <th className='px-4'>Work Assigned</th>
-            <th className='px-4'>Mission</th>
-            <th className='px-4'>Assigned Admin</th>
-            <th className='px-4'>Due Date</th>
-            {userType === 'Admin' ? (
-              <th className='px-4'>Operations</th>
-            ) : (
-              <th className='px-4'>Update Status</th>
-            )}
-          </thead>
-          {tasks.length > 0 && (
-            <tbody>
-              {tasks.map((task) => (
-                <tr key={task.id}>
+            <div className='search '>
+              <input type="text" onChange={handleInputChange} placeholder="search..." value={searchItem} /><span><button onClick={handleSearch}>Search</button></span>
+              {searchResults.length > 0 && (
+                <div className="dropdown">
+                  {searchResults.map((result, index) => (
+                    <div key={index} className="dropdown-item">
+                      {result}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className='sort '>
+              <select className="mt-5 text-center" value={sortOption} onChange={handleSortChange} >
+                <option value="Ascending">Sort by Ascending</option>
+                <option value="Descending">Sort by Descending</option>
+                <option value="ToBeStarted">To be started</option>
+                <option value="InProgress">In progress</option>
+                <option value="Accomplished">Accomplished</option>
+              </select>
+            </div>
+            <div className='sort '>
+              <select className="mt-5 text-center" value={sortOption} onChange={handleMissionChange} >
+                                <option value="ToBeStarted">To be started</option>
+                <option value="InProgress">In progress</option>
+                <option value="Accomplished">Accomplished</option>
+              </select>
+            </div>
 
-                  <td className='text-black py-3 px-4'>{task.userId}</td>
-                  <td className='text-black py-3 px-4'>{task.Name}</td>
-                  <td className='text-black py-3 px-4'>{task.WorkAssigned}</td>
+            <h1>Status Report</h1>
+            <table className=' table table-striped my-3 '>
+              <thead>
 
-                  <td className='text-black py-3 px-4'>{task.Mission}</td>
-                  <td className='text-black py-3 px-4'>{task.AssignedUser}</td>
-                  <td className='text-black py-3 px-4'>{task.DueDate}</td>
+                <th className='px-4'>Mission ID</th>
+                <th className='px-4'>Name</th>
+                <th className='px-4'>Work Assigned</th>
+                <th className='px-4'>Mission</th>
+                <th className='px-4'>Assigned Admin</th>
+                <th className='px-4'>Due Date</th>
+                {userType === 'Admin' ? (
+                  <th className='px-4'>Operations</th>
+                ) : (
+                  <th className='px-4'>Update Status</th>
+                )}
+              </thead>
+              {sortedTasks.length > 0 && (
+                <tbody>
+                  {sortedTasks.map((task) => (
+                    <tr >
 
-                  {userType === 'Admin' ? (
-                    <td className='d-flex justify-content-center py-3 px-4'>
-                      <button className="delete-button  bg-danger shadow mx-2" onClick={() => deleteData(task.id)}>
-                        <svg className="delete-svgIcon" viewBox="0 0 448 512">
-                          <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
-                        </svg>
-                      </button>
+                      <td className='text-black py-3 px-4'>{task.userId}</td>
+                      <td className='text-black py-3 px-4'>{task.Name}</td>
+                      <td className='text-black py-3 px-4'>{task.WorkAssigned}</td>
 
-                    </td>
-                  ) : (
-                    <td className='d-flex justify-content-center py-3 px-4'>
-                      <button className="edit-button bg-info shadow mx-2 " onClick={() => setModalShow(true)}>
-                        <svg className="edit-svgIcon" viewBox="0 0 512 512">
-                          <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
-                        </svg>
-                      </button>
-                      {console.log(parseInt(task.id))}
-                      <MyModal id="modal2" workId={parseInt(task.id)}
-                        mission={task.Mission}
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}
-                      />
-                    </td>
-                  )}
+                      <td className='text-black py-3 px-4'>{task.Mission}</td>
+                      <td className='text-black py-3 px-4'>{task.AssignedUser}</td>
+                      <td className='text-black py-3 px-4'>{task.DueDate}</td>
 
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
-</>
-):(                    <h1>Kindly gain the access to see the status report</h1>
-)}
-       
+                      {userType === 'Admin' ? (
+                        <td className='d-flex justify-content-center py-3 px-4'>
+                          <button className="delete-button  bg-danger shadow mx-2" onClick={() => deleteData(task.id)}>
+                            <svg className="delete-svgIcon" viewBox="0 0 448 512">
+                              <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                            </svg>
+                          </button>
+
+                        </td>
+                      ) : (
+                        <td className='d-flex justify-content-center py-3 px-4'>
+                          <button className="edit-button bg-info shadow mx-2 " onClick={() => setModalShow(true)}>
+                            <svg className="edit-svgIcon" viewBox="0 0 512 512">
+                              <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
+                            </svg>
+                          </button>
+                          {console.log(parseInt(task.id))}
+                          <MyModal id="modal2" workId={parseInt(task.id)}
+                            mission={task.Mission}
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                          />
+                        </td>
+                      )}
+
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+          </>
+        ) : (<h1>Kindly gain the access to see the status report</h1>
+        )}
+
       </>
     </div>
   );

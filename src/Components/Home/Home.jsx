@@ -3,7 +3,7 @@ import React from 'react'
 const Home = () => {
   return (
     <div>
-        Task Assigner
+        <h1>Task Assigner</h1>
     </div>
   )
 }
