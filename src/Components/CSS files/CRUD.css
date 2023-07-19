@@ -97,5 +97,11 @@
     font-size: 1px;
   }
   
-
-  
+.hitman-logo{
+  background-image: url('/../rolebasedapp/src/Assets/Images/pngegg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+margin-left: auto;
+}

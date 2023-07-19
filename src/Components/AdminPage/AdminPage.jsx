@@ -6,14 +6,19 @@ import { TypeContext } from '../Context/Context';
 import { MyModal } from '../Modal/Modal';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/esm/Button';
+import ReactSearchBox from "react-search-box";
 
 const AdminPage = () => {
   let id = useParams();
 
   const { userType, hitman } = useContext(TypeContext);
-
-  const [tasks, setTasks] = useState([])
+  const [taskIndex, setTaskIndex] = useState([]);
+  const [sortOption, setSortOption] = useState('');
+  const [taskuser, setTaskUser] = useState([]);  const [tasks, setTasks] = useState([])
   const [modalShow, setModalShow] = useState(false);
+  const [searchResults, setSearchResults] = useState('');
+  const [searchItem,setSearchItem] = useState('')
+
   const fetchData = (name) => {
     axios.get(`http://localhost:4000/Tasks?${name}=${hitman}`)
       .then((res) => {
@@ -28,11 +33,48 @@ const AdminPage = () => {
       })
   }
 
+  const sortItems =(tasks)=>{
+    const sortedTasks = [...tasks];
+    sortedTasks.sort((a,b)=>{
+      switch(sortOption){
+        case 'Ascending':
+          return a.Name.localeCompare(b.Name);
+          case 'Descending':
+          return a.Name.localeCompare(b.Name);
+       
+        default:
+          return 0;
+       
+      }
+    })
+    return sortedTasks;
+  }
+
+  const sortedTasks = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
+console.log(sortedTasks)
+  const handleSortChange=(event)=>{
+    setSortOption(event.target.value)
+  }
+
+  const handleInputChange = (event)=>{
+    setSearchItem(event.target.value)
+  }
+
+  const handleSearch=()=>{
+setSearchResults(tasks);
+  }
+  const search=()=>{
+    console.log(tasks)
+
+// const searchResult =  tasks.filter((item)=>String(item.name).toLowerCase().includes(searchItem.toLowerCase()));
+
+// setSearchTasks((searchResult))
+  }
+
   useEffect(() => {
     if (userType === 'Admin') {
       fetchData("noname");
     } else fetchData("Name");
-
 
   }, [])
 
@@ -42,15 +84,39 @@ const AdminPage = () => {
         {userType === "Admin" && (
           <>
             <Button variant="dark" className='float-end me-2 shadow mt-2' onClick={() => setModalShow(true)}>Assign Task</Button>
-            <MyModal id="modal1" admin="Admin" show={modalShow} onHide={() => setModalShow(false)} />
+            <MyModal id="modal1" adminModal={true} show={modalShow} onHide={() => setModalShow(false)} />
 
           </>
         )}
+        {console.log(hitman)}
+        {hitman!="NoUser"? (
+          <>
+          <div className='search '>
+         <input type="text" onChange={handleInputChange} placeholder="search..." value={searchItem} /><span><button onClick={handleSearch}>Search</button></span>
+         {console.log("length "+searchResults)}
+         {searchResults.length>0 &&(
+        <div className="dropdown">
+        {searchResults.map((result, index) => (
+          <div key={index} className="dropdown-item">
+            {result}
+          </div>
+        ))}
+      </div>
+         )}
+         </div>
+         <div className='sort '>
+         <select className="mt-5 text-center" value={sortOption} onChange={handleSortChange} >
+          <option value="Ascending">Sort by Ascending</option>
+          <option value="Descending">Sort by Descending</option>         
+        </select>
+         </div>
+    
         <h1>Status Report</h1>
         <table className=' table table-striped my-3 '>
           <thead>
+            
             <th className='px-4'>Agency Name</th>
-            <th className='px-4'>Name</th>
+            <th className='px-4'>Name</th> 
             <th className='px-4'>Work Assigned</th>
             <th className='px-4'>Mission</th>
             <th className='px-4'>Assigned Admin</th>
@@ -104,6 +170,10 @@ const AdminPage = () => {
             </tbody>
           )}
         </table>
+</>
+):(                    <h1>Kindly gain the access to see the status report</h1>
+)}
+       
       </>
     </div>
   );

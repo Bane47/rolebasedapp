@@ -5,7 +5,7 @@ export const TypeContext = createContext();
 export function TypeProvider({ children }) {
   const [userType, setUserType] = useState('User');
   const [admin, setAdmin] = useState('');
-  const [hitman, setHitman] = useState('');
+  const [hitman, setHitman] = useState('NoUser');
 
 
   return (

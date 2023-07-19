@@ -35,28 +35,28 @@ export function MyModal(props) {
       })
   }
  
-  const assignTask=()=>{
-    var count=0;
+  const assignTask = () => {
+    var count = 0;
     fetch(`http://localhost:4000/Tasks`)
-  .then((res)=> res.json())
-  .then((response) => {
-    for (const res of response) {
-      parseInt(count);
-      count++
-    }
-  }).then(()=>{
-      axios.post("http://localhost:4000/Tasks",{
-        Name: Name,
-        WorkAssigned: WorkAssigned,
-        Mission: "To be started",
-        AssignedUser: admin,
-        DueDate: DueDate,
-        userId: "Agent "+count
+      .then((res) => res.json())
+      .then((response) => {
+        for (const res of response) {
+          parseInt(count);
+          count++;
+        }
       })
-    })
+      .then(() => {
+        axios.post("http://localhost:4000/Tasks", {
+          Name: Name,
+          WorkAssigned: WorkAssigned,
+          Mission: "To be started",
+          AssignedUser: admin,
+          DueDate: DueDate,
+          userId: "Agent " + count
+        });
+      });
+  };
   
-    
-  }
   useEffect(()=>{
 
     axios.get("http://localhost:4000/Users")
@@ -89,8 +89,7 @@ export function MyModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {console.log(admin)}
-        {admin==="" ? (
+        {props.adminModal===true ? (
           <>
             <div className='d-flex justify-content-center'>
               <h4 className='col-lg-3 my-3'>Name</h4>
