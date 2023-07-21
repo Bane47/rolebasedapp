@@ -52,7 +52,7 @@ export function MyModal(props) {
           Mission: "To be started",
           AssignedUser: admin,
           DueDate: DueDate,
-          userId: "Agent " + count
+          userId: count
         });
       });
   };

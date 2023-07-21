@@ -6,7 +6,7 @@
       "phone": "9784512963",
       "nation": "India",
       "email": "sri@cvb.gmail.com",
-      "password": "qweQWE123!@#",
+      "password": "a",
       "userType": "Admin",
       "id": 1
     }
@@ -38,30 +38,21 @@
   "Tasks": [
     {
       "Name": "Priyadarshan M",
-      "WorkAssigned": "Assassinate Modi",
-      "Mission": "To be started",
-      "AssignedUser": "",
-      "DueDate": "2023-07-28",
-      "userId": "Agent 0",
+      "WorkAssigned": "Assassinate the drug lord",
+      "Mission": "In Progress",
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-07-21",
+      "userId": 0,
       "id": 1
     },
     {
       "Name": "Priyadarshan M",
-      "WorkAssigned": "Loot The great britain castle",
+      "WorkAssigned": "Run",
       "Mission": "To be started",
-      "AssignedUser": "",
-      "DueDate": "2023-07-22",
-      "userId": "Agent 1",
+      "AssignedUser": "Satis Kumar",
+      "DueDate": "2023-08-03",
+      "userId": 1,
       "id": 2
-    },
-    {
-      "Name": "Sharon",
-      "WorkAssigned": "Kill Hemanth",
-      "Mission": "To be started",
-      "AssignedUser": "",
-      "DueDate": "2023-07-19",
-      "userId": "Agent 2",
-      "id": 3
     }
   ]
 }

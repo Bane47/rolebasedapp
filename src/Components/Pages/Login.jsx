@@ -19,6 +19,7 @@ const Login = () => {
   var password,name,checkPassword,id,phrase="Entering the shadows with lethal grace";
   const { setUserType } = useContext(TypeContext); // Remove userType from here
   const {  setHitman } = useContext(TypeContext)
+  const { setAdmin } = useContext(TypeContext)
 const [Category,setCategory]= useState("Users")
 
   const submitData = (data) => {
@@ -40,6 +41,7 @@ const [Category,setCategory]= useState("Users")
             .get(`http://localhost:4000/${Category}?name=${name}`)
             .then((data) => {
               name=data.data[0].name;
+              setAdmin(data.data[0].name)
               checkPassword = data.data[0].password;
               setUserType(data.data[0].userType);
               id=data.data[0];

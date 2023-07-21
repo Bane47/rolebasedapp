@@ -14,11 +14,11 @@ const AdminPage = () => {
   const { userType, hitman } = useContext(TypeContext);
   const [taskIndex, setTaskIndex] = useState([]);
   const [sortOption, setSortOption] = useState('');
-  const [taskuser, setTaskUser] = useState([]); const [tasks, setTasks] = useState([])
+  const [taskuser, setTaskUser] = useState([]);
+  const [tasks, setTasks] = useState([])
   const [modalShow, setModalShow] = useState(false);
-  const [searchResults, setSearchResults] = useState('');
   const [searchItem, setSearchItem] = useState('')
-  const [missionSort,setMissionSort] = useState('')
+  const [missionSort, setMissionSort] = useState('')
 
   const fetchData = (name) => {
     axios.get(`http://localhost:4000/Tasks?${name}=${hitman}`)
@@ -35,67 +35,109 @@ const AdminPage = () => {
   }
 
 
-  // sortedTasks2 do this
+
 
 
 
   const sortItems = (tasks) => {
-    const NoElement = "There are no tasks"
-    const sortedTasks = [...tasks];
-    const missionSort = (opti) => {
+    var Element = [];
+    var sortedTasks = [...tasks];
 
-      switch(sortOption){
-        case 'ToBeStarted':
-          return missionSort("To Be Started");
-      case 'InProgress':
-        return missionSort("In Progress");
-        case 'Accomplished':
-          return missionSort("Accomplished");
-      }
-
-      for (const task of tasks) {
-
-        return tasks.filter((opt) => opt.Mission.toLowerCase().includes(opti.toLowerCase()))
-      }
+    switch (sortOption) {
+      // case 'Ascending':
+      //   console.log((a.Name.localeCompare(b.Name)))
+      //   return a.Name.localeCompare(b.Name);
+      // case 'Descending':
+      //   return b.Name.localeCompare(a.Name);
+      case 'All':
+        return sortedTasks;
+      case 'To be started':
+        console.log(sortedTasks.filter((item) => item.Mission === 'To be started'))
+        return sortedTasks.filter((item) => item.Mission === 'To be started');
+      case 'In Progress':
+        return sortedTasks.filter((item) => item.Mission === 'In Progress');
+      case 'Accomplished':
+        return sortedTasks.filter((item) => item.Mission === 'Accomplished');
+      default:
+        return sortedTasks;
     }
 
-  
 
-    sortedTasks.sort((a, b) => {
-      switch (sortOption) {
-        case 'Ascending':
-          return a.Name.localeCompare(b.Name);
-        case 'Descending':
-          return b.Name.localeCompare(a.Name);
-        default:
-          return 0;
+    // console.log(tasks)
+    // switch (sortOption) {
+    //   case 'To be started':
+    //     for (let i = 0; i < sortedTasks.length; i++) {
 
-      }
-    })
-    console.log(sortedTasks)
-    return sortedTasks;
+    //       console.log(sortOption)
+    //       if (sortOption === sortedTasks[i].Mission) {
+    //         Element = sortedTasks[i]
+    //         console.log(Element)
+    //       }
+
+    //     }
+    //     console.log(typeof(Element))
+    //     return Element;
+
+    //   case 'In Progress':
+    //     for (let i = 0; i < sortedTasks.length; i++) {
+
+    //       console.log(sortOption)
+    //       if (sortOption === sortedTasks[i].Mission) {
+    //         console.log("HJVGHVGY")
+    //         Element = sortedTasks[i]
+    //         console.log(Element)
+    //       }
+
+    //     }
+    //     sortedTasks= Element;
+
+    //   case 'Accomplished':
+    //     for (let i = 0; i < sortedTasks.length; i++) {
+
+    //       console.log(sortOption)
+    //       if (sortOption === sortedTasks[i].Mission) {
+    //         Element = sortedTasks[i]
+    //         console.log(Element)
+    //       }
+
+    //     }
+
+    //     return Element;
+    //   default:
+
+    //     sortedTasks.sort((a, b) => {
+    //       switch (sortOption) {
+    // case 'Ascending':
+    //   console.log((a.Name.localeCompare(b.Name)))
+    //   return a.Name.localeCompare(b.Name);
+    // case 'Descending':
+    //   return b.Name.localeCompare(a.Name);
+    //         default:
+    //           return 0;
+
+    //       }
+    //     }
+
+    //     )
+
+    //     return sortedTasks;
+
   }
+
+
+
+  // return sortedTasks;
+
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value)
   }
-  const handleMissionChange=(e)=>{
-setMissionSort(e.target.value)
+  const handleMissionChange = (e) => {
+    setMissionSort(e.target.value)
   }
 
   const handleInputChange = (event) => {
     setSearchItem(event.target.value)
-  }
-
-  const handleSearch = () => {
-    setSearchResults(tasks);
-  }
-  const search = () => {
-    console.log(tasks)
-
-    // const searchResult =  tasks.filter((item)=>String(item.name).toLowerCase().includes(searchItem.toLowerCase()));
-
-    // setSearchTasks((searchResult))
   }
 
   useEffect(() => {
@@ -113,12 +155,11 @@ setMissionSort(e.target.value)
       })
   }
   const sortedTasks = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
-  const sortedTasks2 = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
 
 
   useEffect(() => {
     sortDataFetch();
-    console.log(sortedTasks)
+
   }, [])
 
   return (
@@ -131,36 +172,22 @@ setMissionSort(e.target.value)
 
           </>
         )}
-        {hitman != "NoUser" ? (
+        {hitman !== "NoUser" ? (
           <>
-            <div className='search '>
-              <input type="text" onChange={handleInputChange} placeholder="search..." value={searchItem} /><span><button onClick={handleSearch}>Search</button></span>
-              {searchResults.length > 0 && (
-                <div className="dropdown">
-                  {searchResults.map((result, index) => (
-                    <div key={index} className="dropdown-item">
-                      {result}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className='sort '>
+
+            <div className='sort float-left d-flex '>
               <select className="mt-5 text-center" value={sortOption} onChange={handleSortChange} >
-                <option value="Ascending">Sort by Ascending</option>
-                <option value="Descending">Sort by Descending</option>
-                <option value="ToBeStarted">To be started</option>
-                <option value="InProgress">In progress</option>
+                {/* <option value="Ascending">Sort by Ascending</option>
+                <option value="Descending">Sort by Descending</option> */}
+                <option value="" disabled>Sort By:</option>
+                <option value="All">All</option>
+                <option value="To be started">To Be Started</option>
+                <option value="In Progress">In Progress</option>
                 <option value="Accomplished">Accomplished</option>
+
               </select>
             </div>
-            <div className='sort '>
-              <select className="mt-5 text-center" value={sortOption} onChange={handleMissionChange} >
-                                <option value="ToBeStarted">To be started</option>
-                <option value="InProgress">In progress</option>
-                <option value="Accomplished">Accomplished</option>
-              </select>
-            </div>
+
 
             <h1>Status Report</h1>
             <table className=' table table-striped my-3 '>
@@ -178,6 +205,7 @@ setMissionSort(e.target.value)
                   <th className='px-4'>Update Status</th>
                 )}
               </thead>
+
               {sortedTasks.length > 0 && (
                 <tbody>
                   {sortedTasks.map((task) => (
