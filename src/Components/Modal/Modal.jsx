@@ -123,6 +123,7 @@ export function MyModal(props) {
           <>
             <div className='d-flex justify-content-center'>
               <h4 className='col-lg-3 my-3'>Mission Status</h4>
+              {console.log(props.workId)}
               <select className='col-lg-3 my-3' name="mission" onChange={(e) => setMission(e.target.value)}>
                 <option value={props.mission}>{props.mission}</option>
                 <option value="To be started">To be started</option>
