@@ -9,6 +9,8 @@ export function MyModal(props) {
   const { admin } = useContext(TypeContext);
   var userNames = [];
   const [userList,setUserList] = useState([]);
+  const todayDate = new Date()
+  console.log(todayDate.toUTCString())
 
 
 
@@ -36,6 +38,7 @@ export function MyModal(props) {
   }
  
   const assignTask = () => {
+    
     var count = 0;
     fetch(`http://localhost:4000/Tasks`)
       .then((res) => res.json())
@@ -46,14 +49,19 @@ export function MyModal(props) {
         }
       })
       .then(() => {
-        axios.post("http://localhost:4000/Tasks", {
-          Name: Name,
-          WorkAssigned: WorkAssigned,
-          Mission: "To be started",
-          AssignedUser: admin,
-          DueDate: DueDate,
-          userId: count
-        });
+        if(Date.parse(todayDate.toUTCString())>Date.parse(DueDate)){
+          alert("Please give a valid due date")
+        }else{
+          axios.post("http://localhost:4000/Tasks", {
+            Name: Name,
+            WorkAssigned: WorkAssigned,
+            Mission: "To be started",
+            AssignedUser: admin,
+            DueDate: DueDate,
+            userId: count
+          });
+        } 
+       
       });
   };
   

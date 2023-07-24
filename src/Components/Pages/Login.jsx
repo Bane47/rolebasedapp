@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { TypeContext } from "../Context/Context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -20,6 +20,7 @@ const Login = () => {
   const { setUserType } = useContext(TypeContext); // Remove userType from here
   const {  setHitman } = useContext(TypeContext)
   const { setAdmin } = useContext(TypeContext)
+  const history = useNavigate()
 const [Category,setCategory]= useState("Users")
 
   const submitData = (data) => {
@@ -47,8 +48,10 @@ const [Category,setCategory]= useState("Users")
               id=data.data[0];
             })
             .then(() => {
-              if(Category==="User")
+              if(Category==="User"){
               alert(`Access granted ${phrase}`)
+              history("/")
+            }
               else alert(`${phrase}`)
               setHitman(name)
             })

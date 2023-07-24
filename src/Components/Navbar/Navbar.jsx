@@ -14,8 +14,13 @@ const Navbar = () => {
                 </Link>
             </div>
 
-            <div className='hitman-logo   float-end  text-center float-right'>      
-                               
+            <div className='ms-auto'>
+            <Link to="/">
+                <div className='hitman-logo   float-end  text-center float-right'>
+
+                </div>
+                </ Link>
+
             </div>
             <div className='ms-auto '>
                 <Link to='/myform'>

@@ -8,25 +8,19 @@ import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/esm/Button';
 import ReactSearchBox from "react-search-box";
 
+
 const AdminPage = () => {
   let id = useParams();
   const { userType, hitman } = useContext(TypeContext);
   const [taskIndex, setTaskIndex] = useState([]);
   const [sortOption, setSortOption] = useState('');
-  const [taskuser, setTaskUser] = useState([]);
   const [tasks, setTasks] = useState([])
   const [modalShow, setModalShow] = useState(false);
-  const [searchItem, setSearchItem] = useState('')
-  const [missionSort, setMissionSort] = useState('')
   const [taskId, setTaskId] = useState(null);
+  const [searchInput,setSearchInput] = useState('')
 
 
-  const fetchData = (name) => {
-    axios.get(`http://localhost:4000/Tasks?${name}=${hitman}`)
-      .then((res) => {
-        setTasks(res.data)
-      });
-  }
+
 
   const deleteData = (id) => {
     axios.delete(`http://localhost:4000/Tasks/${id}`)
@@ -41,15 +35,10 @@ const AdminPage = () => {
 
 
   const sortItems = (tasks) => {
-    var Element = [];
     var sortedTasks = [...tasks];
 
     switch (sortOption) {
-      // case 'Ascending':
-      //   console.log((a.Name.localeCompare(b.Name)))
-      //   return a.Name.localeCompare(b.Name);
-      // case 'Descending':
-      //   return b.Name.localeCompare(a.Name);
+
       case 'All':
         return sortedTasks;
       case 'To be started':
@@ -125,6 +114,23 @@ const AdminPage = () => {
 
   }
 
+  const searchItem=()=>{
+    console.log(searchInput)
+    axios.get(`http://localhost:4000/Tasks?Name_like=${searchInput}`)
+    .then((data) => {
+        setTaskIndex(data.data) 
+                  
+    
+    })
+    console.log(sortedTasks)
+  //   if(taskIndex.length>0){
+  //   sortedTasks = [...taskIndex];
+  //   sortedTasks.filter((item)=>item.Name===searchInput)
+  // }else return(
+  //   <h1>No tasks</h1>
+  // )
+  }
+
 
 
   // return sortedTasks;
@@ -133,30 +139,22 @@ const AdminPage = () => {
   const handleSortChange = (event) => {
     setSortOption(event.target.value)
   }
-  const handleMissionChange = (e) => {
-    setMissionSort(e.target.value)
-  }
-
-  const handleInputChange = (event) => {
-    setSearchItem(event.target.value)
-  }
-
-  useEffect(() => {
-    if (userType === 'Admin') {
-      fetchData("noname");
-    } else fetchData("Name");
-
-  }, [])
-
-
   const sortDataFetch = () => {
-  
-    axios.get(`http://localhost:4000/Tasks?Name=${hitman}`)
+  if(userType==='Admin'){
+    axios.get(`http://localhost:4000/Tasks`)
       .then((data) => {
-        console.log(data.data)
+                 setTaskIndex(data.data)              
+      
+      })
+
+    }
+    else{
+      axios.get(`http://localhost:4000/Tasks?Name=${hitman}`)
+      .then((data) => {
           setTaskIndex(data.data)              
       
       })
+    }
   }
   const sortedTasks = Array.isArray(taskIndex) ? sortItems(taskIndex) : []
 
@@ -174,13 +172,18 @@ console.log(hitman)
             <Button variant="dark" className='float-end me-2 shadow mt-2' onClick={() => setModalShow(true)}>Assign Task</Button>
             <MyModal id="modal1" adminModal={true} show={modalShow} onHide={() => setModalShow(false)} />
 
+            <div className='float-start mt-2 ms-1'>
+              
+              <input type="text" placeholder='search' onChange={(e)=>setSearchInput(e.target.value)} />
+              <button onClick={searchItem}>Search</button>
+            </div>
           </>
         )}
         {hitman !== "NoUser" ? (
           <>
 
-            <div className='sort float-left d-flex '>
-              <select className="mt-5 text-center" value={sortOption} onChange={handleSortChange} >
+            
+              <select className="mt-2 text-center float-end me-1 p-1" value={sortOption} onChange={handleSortChange} >
                 {/* <option value="Ascending">Sort by Ascending</option>
                 <option value="Descending">Sort by Descending</option> */}
                 <option value="" disabled>Sort By:</option>
@@ -190,10 +193,10 @@ console.log(hitman)
                 <option value="Accomplished">Accomplished</option>
 
               </select>
-            </div>
+          
 
 
-            <h1>Status Report</h1>
+            <h1 className='m'>Status Report</h1>
             <table className=' table table-striped my-3 '>
               <thead>
 
